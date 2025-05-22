@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Processor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            text-align: center;
+            background-image: url('/static/images/bg3.jpg');
+            background-size: cover;      
+            background-position: center; 
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 0.8;
+        }
+        form {
+            margin: 20px auto;
+        }
+        input[type=file] {
+            padding: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        img {
+            margin-top: 30px;
+            max-width: 90%;
+            height: auto;
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<div class="header">
+<h1 style="margin-bottom: 5px;font-style: italic;font-family:'Times New Roman', Times, serif; font-size: 40px;color: black;"><u> Color Image Processing</u></h1>
+</div>
+<style>
+    .header{
+     background-color:orange;
+    color: white;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border: 2px solid black;
+    border-radius: 8px;
+    }
+</style>
+<body>
+    <h2><u>Upload an Image to Process them to RGB Channels and Colour Models</u></h2>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" required>
+        <button type="submit">Process</button>
+    </form>
+    <div class="box">
+    <ul style="font-size: 20px;text-align: justify;">
+        <li>Color image processing is an essential branch of digital image processing that deals with images represented in color spaces. 
+        Unlike grayscale images that contain only intensity information, color images provide richer information by representing each pixel with multiple color 
+        components.</li>
+        <li> This enables more effective analysis, segmentation, and interpretation of visual data.
+         Various color models are used to represent color in digital images, each suited for different applications.</li>
+        <li>The RGB (Red, Green, Blue) model is the most common and is used in display systems and image acquisition devices. 
+        The HSV (Hue, Saturation, Value) model is often preferred for tasks requiring color-based segmentation, as it separates chromatic information from intensity.
+        The Lab color model approximates human vision and is used in color correction. 
+        YCrCb is commonly used in video compression, while CMYK is applied in color printing.</li>
+        <li>By transforming images into different color spaces, color image processing techniques can enhance image quality, detect objects, 
+        and perform complex visual analysis.</li>
+    </ul>
+    </div>
+    <style>
+        .box{
+            border: 2px solid black;
+            padding: 20px;
+            width: 1400px;
+            height: 250px;
+            border-radius: 8px;
+            background-color: bisque;
+
+        }
+    </style>
+    {% if result_image %}
+        <h2>The processed output is shown below:</h2>
+        <img src="{{ url_for('send_file', filename=result_image.split('/')[-1]) }}" alt="Processed Image">
+        <div class="box1">
+        <ul style="text-align: justify;font-size: 20px;">
+            <h2 style="text-align: center;font-size: 25px;"><u>Color Model And Channel Summary :</u></h2>
+            <div class="info-block">
+            <li>HSV Image :HSV (Hue, Saturation, Value) represents colors based on human perception.
+                 Hue defines color type (0–360° on the color wheel), Saturation indicates color intensity, and Value reflects brightness.
+                  An HSV image is derived from an RGB image through a nonlinear transformation, separating chromatic content (hue/saturation) 
+                  from lighting (value), which is useful in object detection, segmentation, and color filtering.</li></div>
+                  <div class="info-block">
+            <li>YCrCb Image :YCrCb separates an image into luma (Y) and chroma components (Cr, Cb). Y carries brightness, while Cr and Cb carry red-difference and blue-difference chrominance. It's used extensively in video compression (e.g., JPEG, MPEG) to exploit the human eye's higher sensitivity to brightness over color. RGB to YCrCb involves a linear transformation emphasizing luminance for efficient encoding and skin tone analysis.</li></div>
+            <div class="info-block">
+            <li> Lab Image :The Lab color space models human color perception. It consists of L* (lightness), a* (green–red), and b* (blue–yellow). It is device-independent, designed to be perceptually uniform—meaning equal distances correspond to equal visual differences. Lab images are converted from RGB via an intermediate XYZ space and are ideal for color correction, image segmentation, and comparing visual similarity between colors.</li></div>
+            <div class="info-block">
+            <li>Grayscale Image :A grayscale image uses only shades of gray, ranging from black to white, with each pixel carrying intensity information. It is generated from RGB by calculating a weighted average (commonly 0.299R + 0.587G + 0.114*B) to reflect human brightness sensitivity. Grayscale reduces complexity, memory, and computational requirements, making it suitable for tasks like edge detection, morphology, and thresholding.</li></div>
+            <div class="info-block">
+            <li> Red Channel :The red channel image isolates red intensities from an RGB image. Each pixel’s value reflects its red component (0–255), while green and blue are suppressed. This channel emphasizes red-dominant areas and is often used in medical imaging and plant analysis. Formed by separating the red plane, it supports feature extraction based on spectral characteristics or color anomalies.</li></div>
+            <div class="info-block">
+           <li>Green Channel :The green channel extracts the green intensity of each pixel in an RGB image. Human vision is most sensitive to green, which is why digital cameras often capture more green data (e.g., in Bayer filters). This channel is crucial in vegetation indexing (e.g., NDVI), surveillance, and face detection. It’s formed by isolating the green component, enhancing detail and contrast.</li></div>
+           <div class="info-block">
+           <li> Blue Channel :The blue channel image represents the contribution of the blue spectrum to the RGB composite. It’s typically darker and noisier because human eyes are less sensitive to blue light. Extracting the blue channel reveals water bodies or metallic surfaces and is used in satellite imaging and haze detection. It is obtained by mapping each pixel's blue value into a grayscale representation.</li></div>
+           <div class="info-block">
+           <li>Red Filtered Image :A red-filtered image enhances or retains red content while suppressing green and blue components. It's created by multiplying the red channel and nullifying or dimming others. Red filters are used to increase contrast in black-and-white photography, highlight warm regions in thermal imaging, and isolate red objects. They emphasize red wavelength reflectance, valuable in agricultural and biomedical applications.</li></div>
+           <div class="info-block">
+           <li>Edge Detection :Edge detection identifies sudden intensity transitions, highlighting structural boundaries in an image. It transforms grayscale images into edge maps using operators like Sobel, Canny, or Laplacian, which compute gradients. This technique is essential in computer vision, object recognition, and image segmentation. Edges mark texture, shape, and contour changes, forming the foundation for higher-level feature extraction.</li></div>
+        </ul>
+        </div>
+        <style>
+            .box1{
+                border: 2px solid black;
+                height: 900px;
+                width: 1400px;
+                border-radius: 8px;
+                padding: 20px;
+                background-color: bisque;
+                margin-top: 10px;
+            }
+            .info-block{
+                margin-bottom: 20px;
+            }
+        </style>
+    {% endif %}
+</body>
+</html>
